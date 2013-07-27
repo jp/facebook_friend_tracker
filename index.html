@@ -36,12 +36,36 @@
         FB.api('/'+friend.id+'/checkins', function(response) {
           console.log('I can spy on '+friend.name+' now.');
           console.log(response);
-          $.each(response.data, function(index, value) {
-            console.log(value.place.location.city)
-          });
+          traceFriend(friend,response.data);
+
         });
       });
     });
+  }
+
+  function traceFriend(friend,data){
+    coordinates = [];
+    $.each(data, function(index, value) {
+      coordinates.push([value.place.location.longitude,value.place.location.latitude])
+    });
+    L.geoJson({
+        "type": "LineString",
+        "coordinates": coordinates
+      }, {
+      style: {
+        "color": getRandomColor(),
+        "opacity": 0.65
+      }
+    }).addTo(map);
+  }
+
+  function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.round(Math.random() * 15)];
+    }
+    return color;
   }
   </script>
 </head>
