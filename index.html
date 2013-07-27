@@ -4,6 +4,7 @@
   <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
   <script src='//api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.js'></script>
   <script src='//code.jquery.com/jquery-1.10.2.min.js'></script>
+  <script src='tracker.js'></script>
   <link href='//api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.css' rel='stylesheet' />
   <!--[if lte IE 8]>
     <link href='//api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.ie.css' rel='stylesheet' >
@@ -36,72 +37,6 @@
       border-bottom-left-radius: 15px;
     }
   </style>
-  <script>
-  window.fbAsyncInit = function() {
-    FB.init({
-        appId      : '370823446374093', // App ID
-        channelUrl : '//localhost:3000/channel.html', // Channel File
-      status     : true, // check login status
-      cookie     : true, // enable cookies to allow the server to access the session
-      xfbml      : true  // parse XFBML
-    });
-
-    FB.Event.subscribe('auth.authResponseChange', function(response) {
-      if (response.status === 'connected') {
-        $('#login').toggleClass('logged-in');
-        $('#login').removeClass('login');
-        spyFriends();
-      }
-    });
-  }
-
-  function spyFriends(){
-    FB.api('/me/friends', function(friends) {
-      $.each(friends.data, function(index, friend) {
-        FB.api('/'+friend.id+'/checkins', function(response) {
-          traceFriend(friend,response.data);
-        });
-      });
-    });
-  }
-
-  function traceFriend(friend,data){
-    var coordinates = [];
-    var markerLayer = [];
-    $.each(data, function(index, value) {
-      coordinates.push([value.place.location.longitude,value.place.location.latitude])
-      var label="";
-      if (value.place.location.city !== undefined)
-        label += value.place.location.city
-      label += ' - '+friend.name
-
-      marker = L.marker([ value.place.location.latitude,value.place.location.longitude ]).bindPopup(label);
-      markerLayer.push(marker);
-    });
-
-    layer = L.featureGroup(markerLayer)
-    map.addLayer(layer);
-
-    L.geoJson({
-        "type": "LineString",
-        "coordinates": coordinates
-      }, {
-      style: {
-        "color": getRandomColor(),
-        "opacity": 0.65
-      }
-    }).addTo(map);
-  }
-
-  function getRandomColor() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++ ) {
-        color += letters[Math.round(Math.random() * 15)];
-    }
-    return color;
-  }
-  </script>
 </head>
 <body>
   <div id="fb-root"></div>
@@ -109,7 +44,7 @@
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=370823446374093";
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId="+app_id;
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));</script>
 
