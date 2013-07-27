@@ -59,10 +59,7 @@
     FB.api('/me/friends', function(friends) {
       $.each(friends.data, function(index, friend) {
         FB.api('/'+friend.id+'/checkins', function(response) {
-          console.log('I can spy on '+friend.name+' now.');
-          console.log(response);
           traceFriend(friend,response.data);
-
         });
       });
     });
