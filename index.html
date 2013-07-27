@@ -3,6 +3,7 @@
 <head>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
   <script src='//api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.js'></script>
+  <script src='//code.jquery.com/jquery-1.10.2.min.js'></script>
   <link href='//api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.css' rel='stylesheet' />
   <!--[if lte IE 8]>
     <link href='//api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.ie.css' rel='stylesheet' >
@@ -12,6 +13,37 @@
     #map { position:absolute; top:0; bottom:0; width:100%; }
     #login {position:absolute;right:0px;top:0px;z-index:10;background:white;padding:10px;}
   </style>
+  <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+        appId      : '213467882140806', // App ID
+        channelUrl : '//localhost:3000/channel.html', // Channel File
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+
+    FB.Event.subscribe('auth.authResponseChange', function(response) {
+      if (response.status === 'connected') {
+        spyFriends();
+      }
+    });
+  }
+
+  function spyFriends(){
+    FB.api('/me/friends', function(friends) {
+      $.each(friends.data, function(index, friend) {
+        FB.api('/'+friend.id+'/checkins', function(response) {
+          console.log('I can spy on '+friend.name+' now.');
+          console.log(response);
+          $.each(response.data, function(index, value) {
+            console.log(value.place.location.city)
+          });
+        });
+      });
+    });
+  }
+  </script>
 </head>
 <body>
   <div id="fb-root"></div>
