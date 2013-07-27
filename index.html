@@ -11,15 +11,30 @@
   <style>
     body { margin:0; padding:0; }
     #map { position:absolute; top:0; bottom:0; width:100%; }
-    #login {
+    .login {
+      position:absolute;
+      left:0;
+      right:0;
+      margin-left:auto;
+      margin-right:auto;
+      width:300px;
+      z-index:10;
+      background:white;
+      padding:10px;
+      -moz-border-radius: 15px;
+      border-radius: 15px;
+       top: 50%;
+       margin-top: -50px;
+     }
+    .logged-in {
       position:absolute;
       right:0px;
       top:0px;
       z-index:10;
       background:white;
       padding:10px;
-      border-bottom-left-radius: 10px;
-}
+      border-bottom-left-radius: 15px;
+    }
   </style>
   <script>
   window.fbAsyncInit = function() {
@@ -33,6 +48,8 @@
 
     FB.Event.subscribe('auth.authResponseChange', function(response) {
       if (response.status === 'connected') {
+        $('#login').toggleClass('logged-in');
+        $('#login').removeClass('login');
         spyFriends();
       }
     });
@@ -99,8 +116,8 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));</script>
 
-  <div id='login'>
-    <div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" scope="user_status,friends_status"></div>
+  <div id='login' class='login'>
+    <div class="fb-login-button" size="xlarge" data-show-faces="true" data-width="300" data-max-rows="1" scope="friends_status"></div>
   </div>
 
 <div id='map'></div>
