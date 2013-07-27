@@ -44,10 +44,22 @@
   }
 
   function traceFriend(friend,data){
-    coordinates = [];
+    var coordinates = [];
+    var markerLayer = [];
     $.each(data, function(index, value) {
       coordinates.push([value.place.location.longitude,value.place.location.latitude])
+      var label="";
+      if (value.place.location.city !== undefined)
+        label += value.place.location.city
+      label += ' - '+friend.name
+
+      marker = L.marker([ value.place.location.latitude,value.place.location.longitude ]).bindPopup(label);
+      markerLayer.push(marker);
     });
+
+    layer = L.featureGroup(markerLayer)
+    map.addLayer(layer);
+
     L.geoJson({
         "type": "LineString",
         "coordinates": coordinates
