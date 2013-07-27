@@ -11,28 +11,28 @@
   <style>
     body { margin:0; padding:0; }
     #map { position:absolute; top:0; bottom:0; width:100%; }
-    .login {
+    .login, .logged-in {
       position:absolute;
+      z-index:10;
+      opacity: 0.85;
+      background:white;
+      padding:10px;
+      box-shadow: 5px 5px 10px #000;
+    }
+    .login {
       left:0;
       right:0;
       margin-left:auto;
       margin-right:auto;
       width:300px;
-      z-index:10;
-      background:white;
-      padding:10px;
       -moz-border-radius: 15px;
       border-radius: 15px;
-       top: 50%;
-       margin-top: -50px;
+      top: 50%;
+      margin-top: -50px;
      }
     .logged-in {
-      position:absolute;
       right:0px;
       top:0px;
-      z-index:10;
-      background:white;
-      padding:10px;
       border-bottom-left-radius: 15px;
     }
   </style>
