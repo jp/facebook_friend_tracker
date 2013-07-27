@@ -11,8 +11,7 @@ window.fbAsyncInit = function() {
 
   FB.Event.subscribe('auth.authResponseChange', function(response) {
     if (response.status === 'connected') {
-      $('#login').toggleClass('logged-in');
-      $('#login').removeClass('login');
+      $('#login').addClass('display-none');
       spyFriends();
     }
   });

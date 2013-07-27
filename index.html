@@ -12,7 +12,8 @@
   <style>
     body { margin:0; padding:0; }
     #map { position:absolute; top:0; bottom:0; width:100%; }
-    .login, .logged-in {
+    .display-none{display:none;}
+    #login, #like {
       position:absolute;
       z-index:10;
       opacity: 0.85;
@@ -20,7 +21,7 @@
       padding:10px;
       box-shadow: 5px 5px 10px #000;
     }
-    .login {
+    #login {
       left:0;
       right:0;
       margin-left:auto;
@@ -31,7 +32,7 @@
       top: 50%;
       margin-top: -50px;
      }
-    .logged-in {
+    #like {
       right:0px;
       top:0px;
       border-bottom-left-radius: 15px;
@@ -42,6 +43,9 @@
   <div id="fb-root"></div>
   <div id='login' class='login'>
     <div class="fb-login-button" size="xlarge" data-show-faces="true" data-width="300" data-max-rows="1" scope="friends_status"></div>
+  </div>
+  <div id='like'>
+    <div class="fb-like" data-href="http://developers.facebook.com/docs/reference/plugins/like" data-send="true" data-width="150" data-show-faces="true"></div>
   </div>
 
 <div id='map'></div>
