@@ -31,6 +31,7 @@ function spyFriends(){
 function traceFriend(friend,data){
   var coordinates = [];
   var markerLayer = [];
+  var color = getRandomColor();
   $.each(data, function(index, value) {
     coordinates.push([value.place.location.longitude,value.place.location.latitude])
     var label="";
@@ -38,7 +39,10 @@ function traceFriend(friend,data){
       label += value.place.location.city
     label += ' - '+friend.name
 
-    marker = L.marker([ value.place.location.latitude,value.place.location.longitude ]).bindPopup(label);
+    marker = L.marker(
+      [ value.place.location.latitude,value.place.location.longitude ],
+      { icon: L.mapbox.marker.icon({'marker-color': color})}
+      ).bindPopup(label);
     markerLayer.push(marker);
   });
 
@@ -50,7 +54,7 @@ function traceFriend(friend,data){
       "coordinates": coordinates
     }, {
     style: {
-      "color": getRandomColor(),
+      "color": color,
       "opacity": 0.65
     }
   }).addTo(map);
@@ -64,3 +68,11 @@ function getRandomColor() {
   }
   return color;
 }
+
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId="+app_id;
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
